@@ -116,7 +116,7 @@ cls
 echo.
 echo Oh, hey^^!
 echo.
-echo It seems like you either forgot or are new to Starling commands.
+echo It seems like you either forgot or are new to Whisperwind commands.
 echo.
 echo Don't worry, I will guide you through those commands.
 echo.
