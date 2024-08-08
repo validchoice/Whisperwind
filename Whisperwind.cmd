@@ -4,6 +4,7 @@ title Whisperwind
 chcp 65001 >nul 
 setlocal enabledelayedexpansion 
 
+:: Enable ANSI to change text color.
 set y=
 for /f %%i in (
     'echo prompt $E ^| cmd'
@@ -14,34 +15,39 @@ for /f %%i in (
 set blue=!y![36m
 set reset=!y![0m 
 
+:: Check AppData for Roblox.
 for /d %%i in (
     "%localappdata%\Roblox\Versions\*"
 ) do (
     if exist "%%i\AppSettings.xml" (
         set cs=%%i 
+        set dir=Local AppData
         goto main
     )
 ) 
 
+:: Check Program Files for Roblox.
 for /d %%i in (
     "C:\Program Files\Roblox\Versions\*"
 ) do (
     if exist "%%i\AppSettings.xml" (
         set cs=%%i 
+        set dir=Program Files
         goto main
     )
 ) 
 
+:: Check Program Files (x86) for Roblox
 for /d %%i in (
     "C:\Program Files (x86)\Roblox\Versions\*"
 ) do (
     if exist "%%i\AppSettings.xml" (
         set cs=%%i 
+        set dir=Program Files (x86)
         goto main
     )
 )
 
-:: echo womp womp your roblox is not even found 
 echo.
 echo Whisper requires Roblox to apply ClientSettings but it doesn't seem to be available.
 echo.
@@ -62,19 +68,15 @@ if "!a!" equ "1" (
 ) 
 
 if "!a!" equ "2" (
-    echo This is not the place where your looking for, use Starling instead.
-    timeout /t 2 /nobreak >nul
-    start "" "https://github.com/validchoice/Starling/blob/main/Starling.cmd"
+    start "" "https://github.com/validchoice/Starling"
     exit
 ) 
 
-:: If you saw that 'womp womp' I apologize :(
 
 if exist "!cs!\ClientSettings" (
     mkdir "%~dp0\Backup"
     xcopy "!cs!\ClientSettings" "%~dp0\Backup"
 ) else ( 
-    :: echo womp womp where's your ClientSettings folder at
     mkdir "!cs!\ClientSettings"
 ) 
 
@@ -83,8 +85,9 @@ if exist "!cs!\ClientSettings" (
 :main 
 cls 
 echo.
-echo ┌── !blue!Whisperwind!reset!
+echo ┌── !blue!Whisperwind!reset! ~ !dir!
 set /p x="└─$ "
+echo.
 
 if /i "!x!" equ "help" (
     goto helpcmd
@@ -103,18 +106,17 @@ if "!x!" equ "3" (
 ) 
 
 if "!x!" equ "cs" (
-    start "" ""
+    start "" "!cs!\ClientSettings" & goto main
 )
 
 echo nuh uh '!x!' is not a valid option 
 timeout /t 2 /nobreak >nul & goto main
 
-:: I didn't copy Starling for this
 
 :helpcmd
 cls 
 echo.
-echo Oh, hey^^!
+echo Oh, it's you^^!
 echo.
 echo It seems like you either forgot or are new to Whisperwind commands.
 echo.
@@ -136,19 +138,16 @@ echo You may press any key to leave & pause >nul & goto main
 cls 
 echo.
 echo Applying balanced graphics... 
-:: And no, I didn't copy this from Starling either
 curl -s -o "!cs!\ClientSettings\ClientAppSettings.json" "https://raw.githubusercontent.com/validchoice/Starling/main/cs/balanced.json"
 echo Done^^! 
 echo Finished applied balanced graphics^^!
 timeout /t 3 /nobreak >nul & goto main
-:: echo womp womp that was fast 
 
 
 :normal 
 cls 
 echo.
 echo Applying normal graphics...
-:: For the people that are curious what normal graphics is for, it stops Roblox from tracking you (not fully | support on other graphics too) 
 curl -s -o "!cs!\ClientSettings\ClientAppSettings.json" "https://raw.githubusercontent.com/validchoice/Starling/main/cs/normal.json"
 echo Done^^! 
 echo Finished applied normal graphics^^! 
@@ -158,8 +157,7 @@ timeout /t 3 /nobreak >nul & goto main
 :potato 
 cls 
 echo.
-echo Applying potato graphics... 
-:: Voxelizer is not included in potato graphics 
+echo Applying potato graphics...
 curl -s -o "!cs!\ClientSettings\ClientAppSettings.json" "https://raw.githubusercontent.com/validchoice/Starling/main/cs/potato.json"
 echo Done^^! 
 echo Finished applied potato graphics^^! 
